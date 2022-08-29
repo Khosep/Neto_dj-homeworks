@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home/</title>
+</head>
+<body>
+<ul>
+{% for dish in dishes %}
+    <a href="/{{ dish }}/"><li>{{ dish }}</li></a>
+{% empty %}
+    <p> Пока нет блюд :(</p>
+{% endfor %}
+</ul>
+
+</body>
+</html>
