@@ -4,7 +4,7 @@
     "pk": 1,
     "fields": {
       "name": "Война и мир",
-      "author": "Ф.Д. Достоевский",
+      "author": "Л.Н. Толстой",
       "pub_date": "2018-02-27"
     }
   },
@@ -15,6 +15,33 @@
       "name": "1984",
       "author": "Джордж Оруэл",
       "pub_date": "2016-12-06"
+    }
+  },
+  {
+    "model": "books.book",
+    "pk": 3,
+    "fields": {
+      "name": "Преступление и наказание",
+      "author": "Ф.М. Достоевский",
+      "pub_date": "2018-03-15"
+    }
+  },
+  {
+    "model": "books.book",
+    "pk": 4,
+    "fields": {
+      "name": "Изучаем Python. Том 1",
+      "author": "Марк Лутц",
+      "pub_date": "2019-01-05"
+    }
+  },
+  {
+    "model": "books.book",
+    "pk": 5,
+    "fields": {
+      "name": "Изучаем Python. Том 2",
+      "author": "Марк Лутц",
+      "pub_date": "2019-01-05"
     }
   }
 ]
