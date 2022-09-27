@@ -27,9 +27,10 @@ class StockProduct(models.Model):
         on_delete=models.CASCADE,
         related_name='positions',
     )
-    quantity = models.PositiveIntegerField(default=1)
+    quantity = models.PositiveIntegerField(default=0)
     price = models.DecimalField(
         max_digits=18,
         decimal_places=2,
         validators=[MinValueValidator(0)],
+        default=0,
     )
