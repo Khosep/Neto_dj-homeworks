@@ -21,16 +21,14 @@ def course_factory():
 @pytest.mark.django_db
 def test_courses_retrieve(api_client, course_factory):
     pattern = 'second'
-    base_url = reverse('courses-list')
     names = ('first', 'second', 'third')
     courses = [course_factory(name=name) for name in names]
-    course_id = Course.objects.get(name=pattern).id
-    url = f'{base_url}?id={course_id}'
+    course_id = next(x for x in courses if x.name == pattern).id
+    url = reverse('courses-detail', [course_id])
     resp = api_client.get(url)
     resp_json = resp.json()
-    print(resp_json)
     assert resp.status_code == 200
-    assert resp_json[0]['name'] == pattern
+    assert resp_json['name'] == pattern
 
 @pytest.mark.django_db
 def test_courses_list(api_client, course_factory):
@@ -44,11 +42,11 @@ def test_courses_list(api_client, course_factory):
 
 @pytest.mark.django_db
 def test_courses_filter_id(api_client, course_factory):
-    pattern ='second'
+    pattern = 'second'
     base_url = reverse('courses-list')
     names = ('first', 'second', 'third')
     courses = [course_factory(name=name) for name in names]
-    course_id = Course.objects.get(name=pattern).id
+    course_id = next(x for x in courses if x.name == pattern).id
     url = f'{base_url}?id={course_id}'
     resp = api_client.get(url)
     resp_json = resp.json()
@@ -58,7 +56,7 @@ def test_courses_filter_id(api_client, course_factory):
 
 @pytest.mark.django_db
 def test_courses_filter_name(course_factory):
-    pattern ='second'
+    pattern = 'second'
     names = ('first', 'second', 'third')
     courses = [course_factory(name=name) for name in names]
     f = CourseFilter(data={'name': pattern})
@@ -75,16 +73,16 @@ def test_courses_create(api_client):
     assert resp.status_code == 201
     assert Course.objects.count() == count + 1
 
+
 @pytest.mark.django_db
 def test_courses_update(api_client, course_factory):
     old_name = 'first'
     pattern = 'test'
-    base_url = reverse('courses-list')
     names = ('first', 'second', 'third')
     courses = [course_factory(name=name) for name in names]
     count = Course.objects.count()
-    course_id = Course.objects.get(name=old_name).id
-    url = f'{base_url}{course_id}/'
+    course_id = next(x for x in courses if x.name == old_name).id
+    url = reverse('courses-detail', [course_id])
     resp = api_client.put(url, data={'name': pattern})
     assert resp.status_code == 200
     assert Course.objects.get(id=course_id).name == pattern
@@ -92,13 +90,12 @@ def test_courses_update(api_client, course_factory):
 
 @pytest.mark.django_db
 def test_courses_delete(api_client, course_factory):
-    base_url = reverse('courses-list')
+    name_for_delete = 'first'
     names = ('first', 'second', 'third')
     courses = [course_factory(name=name) for name in names]
-    qset = Course.objects.all()
-    count = qset.count()
-    course_id = qset.get(name='first').id
-    url = f'{base_url}{course_id}/'
+    count = Course.objects.count()
+    course_id = next(x for x in courses if x.name == name_for_delete).id
+    url = reverse('courses-detail', [course_id])
     resp = api_client.delete(url)
     assert resp.status_code == 204
     assert Course.objects.count() == count - 1
